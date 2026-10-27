@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.example.smarthome.SecurityAndAuthIntegrationTest
--------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.424 s -- in com.example.smarthome.SecurityAndAuthIntegrationTest
