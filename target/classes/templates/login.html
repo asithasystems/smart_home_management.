@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | Haven Smart Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="auth-body">
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-brand">
+            <span class="brand-mark">⌂</span>
+            <div>
+                <strong>Haven</strong>
+                <small>SMART HOME</small>
+            </div>
+        </div>
+
+        <div class="auth-header">
+            <h2>Welcome back</h2>
+            <p class="muted">Enter your credentials to access your smart home dashboard.</p>
+        </div>
+
+        <!-- Logout message -->
+        <div th:if="${param.logout}" class="alert success">
+            You have been securely logged out.
+        </div>
+
+        <!-- Registered success flash message -->
+        <div th:if="${successMessage}" class="alert success" th:text="${successMessage}"></div>
+
+        <!-- Authentication error message -->
+        <div th:if="${param.error}" class="alert error">
+            Invalid username or password. Please verify your credentials and try again.
+        </div>
+
+        <form th:action="@{/login}" method="post" class="auth-form">
+            <!-- CSRF token will be automatically added by Thymeleaf with th:action -->
+            <label>
+                Username
+                <input type="text" name="username" placeholder="e.g. john_doe" required autofocus autocomplete="username">
+            </label>
+
+            <label>
+                Password
+                <input type="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+            </label>
+
+            <button class="button button-primary auth-submit" type="submit">
+                Sign in <span>→</span>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Don't have an account?
+            <a th:href="@{/register}">Create an account</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
