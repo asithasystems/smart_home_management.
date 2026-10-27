@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rooms | Haven</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand"><span class="brand-mark">⌂</span>
+                <div><strong>Haven</strong><small>SMART HOME</small></div>
+            </div>
+            <div class="nav-label">WORKSPACE</div><a class="nav-item" th:href="@{/}"> <span>Overview</span></a><a
+                class="nav-item" th:href="@{/devices}"><span>Devices</span></a><a class="nav-item active"
+                th:href="@{/rooms}"><span>Rooms</span></a>
+            <div class="sidebar-bottom">
+                <div class="profile-dot" sec:authentication="name"
+                    th:text="${#strings.substring(#authentication.name,0,1).toUpperCase()}">U</div>
+                <div style="flex: 1; min-width: 0;"><strong sec:authentication="name"
+                        style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">User</strong><small>Authenticated</small>
+                </div>
+                <form th:action="@{/logout}" method="post" class="logout-form"><button type="submit" class="logout-btn"
+                        title="Sign out">Log out</button></form>
+            </div>
+        </aside>
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <div class="eyebrow">YOUR HOME LAYOUT</div>
+                    <h1>Rooms</h1>
+                </div><a class="button button-primary" href="#add-room">+ Add room</a>
+            </header>
+            <div th:if="${successMessage}" class="alert success" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="alert error" th:text="${errorMessage}"></div>
+            <section class="section-heading">
+                <div>
+                    <h2>Room directory</h2>
+                    <p class="muted">Create rooms to organize your devices.</p>
+                </div><span class="count-chip" th:text="${#lists.size(rooms)} + ' rooms'">0 rooms</span>
+            </section>
+            <div class="room-grid">
+                <article class="room-card" th:each="r : ${rooms}">
+                    <div class="room-art">⌂</div>
+                    <div class="eyebrow">HOME AREA</div>
+                    <h3 th:text="${r.name}">Living room</h3>
+                    <p
+                        th:text="${r.description != null and !r.description.isBlank() ? r.description : 'A space in your smart home.'}">
+                        A space in your smart home.</p>
+                    <div class="room-card-foot"><span>Room ID <strong th:text="'#' + ${r.id}">#1</strong> • <span
+                                th:text="${roomDeviceCounts.get(r.id)} + ' device(s)'">0 device(s)</span></span>
+                        <form th:action="@{/rooms/{id}/delete(id=${r.id})}" method="post"
+                            th:attr="data-room-name=${r.name},data-device-count=${roomDeviceCounts.get(r.id)}"
+                            onsubmit="return handleDeleteRoom(event, this);"><button type="submit"
+                                class="text-action danger-text" title="Delete room">🗑 Delete</button></form>
+                    </div>
+                </article>
+                <div class="empty-card" th:if="${#lists.isEmpty(rooms)}">
+                    <div class="empty-icon">▤</div>
+                    <h3>No rooms yet</h3>
+                    <p>Create your first room to start adding devices.</p>
+                </div>
+            </div>
+            <section id="add-room" class="form-panel">
+                <div class="panel-heading">
+                    <div>
+                        <div class="eyebrow">NEW SPACE</div>
+                        <h2>Add a room</h2>
+                        <p class="muted">Give your room a name and an optional description.</p>
+                    </div>
+                </div>
+                <form th:action="@{/rooms}" th:object="${room}" method="post" class="form-grid room-form">
+                    <label>Room name<input type="text" th:field="*{name}" placeholder="e.g. Living room" required
+                            maxlength="100"><small class="field-error" th:if="${#fields.hasErrors('name')}"
+                            th:errors="*{name}"></small></label>
+                    <label>Description<input type="text" th:field="*{description}" placeholder="e.g. Main family area"
+                            maxlength="500"></label>
+                    <div class="form-footer"><span class="hint">Room names must be unique.</span><button
+                            class="button button-primary" type="submit">Save room <span>→</span></button></div>
+                </form>
+            </section>
+            <script>
+                function handleDeleteRoom(event, form) {
+                    const roomName = form.getAttribute('data-room-name') || 'this room';
+                    const deviceCount = parseInt(form.getAttribute('data-device-count') || '0', 10);
+                    if (deviceCount > 0) {
+                        alert('Cannot delete room "' + roomName + '". It currently contains ' + deviceCount + ' associated device(s).\nPlease delete or reassign those devices first before deleting this room.');
+                        event.preventDefault();
+                        return false;
+                    }
+                    if (!confirm('Are you sure you want to delete the room "' + roomName + '"?')) {
+                        event.preventDefault();
+                        return false;
+                    }
+                    const btn = form.querySelector('button[type="submit"]');
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.textContent = 'Deleting...';
+                    }
+                    return true;
+                }
+            </script>
+            <footer>HAVEN SMART HOME <span>•</span> Student project demonstration</footer>
+        </main>
+    </div>
+</body>
+
+</html>
