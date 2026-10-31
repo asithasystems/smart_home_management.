@@ -1,0 +1,343 @@
+/*
+ * about.css  –  Styles exclusively for the About page (about.html).
+ *
+ * All selectors are scoped under .about-page to prevent any accidental
+ * leakage into the existing dashboard, devices, or rooms pages.
+ *
+ * The existing style.css is NOT modified.  This file is loaded only on
+ * the About page via a separate <link> tag.
+ */
+
+/* ─── Google Fonts (same families already used in style.css – browser caches them) ─── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+/* ─── CSS Custom Properties (scoped – do not interfere with :root in style.css) ─── */
+.about-page {
+    --ab-purple:      #6d5ce8;
+    --ab-purple-dark: #5746d5;
+    --ab-purple-soft: #f0edff;
+    --ab-green:       #258a66;
+    --ab-ink:         #202236;
+    --ab-muted:       #85879b;
+    --ab-line:        #ececf4;
+    --ab-bg:          #f7f7fb;
+    --ab-white:       #ffffff;
+    --ab-linkedin:    #0a66c2;
+    --ab-github:      #24292f;
+    --ab-radius-card: 18px;
+    --ab-radius-btn:  10px;
+    --ab-shadow-card: 0 4px 20px rgba(109, 92, 232, 0.07);
+    font-family: 'DM Sans', Arial, sans-serif;
+    color: var(--ab-ink);
+}
+
+/* ─── Page layout ─── */
+.about-page .about-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px clamp(20px, 4vw, 48px) 60px;
+}
+
+/* ─── Topbar / back link ─── */
+.about-page .about-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+
+.about-page .about-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ab-purple);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: var(--ab-radius-btn);
+    background: var(--ab-purple-soft);
+    transition: background 0.15s, transform 0.15s;
+}
+
+.about-page .about-back-btn:hover {
+    background: #e3deff;
+    transform: translateX(-2px);
+}
+
+.about-page .about-page-title {
+    font: 800 clamp(22px, 3vw, 28px) Manrope, sans-serif;
+    letter-spacing: -0.8px;
+    margin: 0;
+    color: var(--ab-ink);
+}
+
+/* ─── Profile hero card ─── */
+.about-page .about-hero-card {
+    background: var(--ab-white);
+    border: 1px solid var(--ab-line);
+    border-radius: var(--ab-radius-card);
+    padding: 32px 36px;
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    box-shadow: var(--ab-shadow-card);
+    margin-bottom: 24px;
+}
+
+.about-page .about-avatar-wrap {
+    flex-shrink: 0;
+}
+
+.about-page .about-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--ab-purple-soft);
+    box-shadow: 0 4px 16px rgba(109, 92, 232, 0.15);
+    display: block;
+}
+
+/* Placeholder shown when no real photo is present */
+.about-page .about-avatar-placeholder {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e3deff, #f0edff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: 800 38px Manrope, sans-serif;
+    color: var(--ab-purple);
+    border: 3px solid var(--ab-purple-soft);
+    box-shadow: 0 4px 16px rgba(109, 92, 232, 0.15);
+    flex-shrink: 0;
+}
+
+.about-page .about-hero-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.about-page .about-name {
+    font: 800 clamp(20px, 2.8vw, 26px) Manrope, sans-serif;
+    letter-spacing: -0.6px;
+    margin: 0 0 4px;
+    color: var(--ab-ink);
+}
+
+.about-page .about-role-badge {
+    display: inline-block;
+    background: var(--ab-purple-soft);
+    color: var(--ab-purple);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    padding: 5px 11px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+}
+
+.about-page .about-university {
+    font-size: 13px;
+    color: var(--ab-muted);
+    margin: 0 0 14px;
+    line-height: 1.5;
+}
+
+.about-page .about-intro {
+    font-size: 13px;
+    line-height: 1.75;
+    color: #484a62;
+    margin: 0 0 20px;
+    max-width: 560px;
+}
+
+/* ─── Social / profile buttons ─── */
+.about-page .about-profile-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.about-page .about-profile-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: var(--ab-radius-btn);
+    font: 700 12px 'DM Sans', sans-serif;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+    letter-spacing: 0.2px;
+}
+
+.about-page .about-profile-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.13);
+    filter: brightness(1.08);
+}
+
+.about-page .about-profile-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.about-page .btn-linkedin {
+    background: var(--ab-linkedin);
+    color: #fff;
+}
+
+.about-page .btn-github {
+    background: var(--ab-github);
+    color: #fff;
+}
+
+/* ─── Section cards (shared style) ─── */
+.about-page .about-section-card {
+    background: var(--ab-white);
+    border: 1px solid var(--ab-line);
+    border-radius: var(--ab-radius-card);
+    padding: 28px 32px;
+    box-shadow: var(--ab-shadow-card);
+    margin-bottom: 20px;
+}
+
+.about-page .about-section-label {
+    font-size: 10px;
+    letter-spacing: 1.6px;
+    font-weight: 700;
+    color: #9a9bad;
+    text-transform: uppercase;
+    margin: 0 0 6px;
+}
+
+.about-page .about-section-title {
+    font: 750 18px Manrope, sans-serif;
+    letter-spacing: -0.4px;
+    margin: 0 0 18px;
+    color: var(--ab-ink);
+}
+
+/* ─── Interest list ─── */
+.about-page .about-interest-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.about-page .about-interest-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #484a62;
+}
+
+.about-page .about-interest-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ab-purple);
+    margin-top: 5px;
+    flex-shrink: 0;
+}
+
+/* ─── Skills grid ─── */
+.about-page .about-skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.about-page .about-skill-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #f4f3fc;
+    border: 1px solid #e3e0f8;
+    border-radius: 9px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4d4f6b;
+    transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.about-page .about-skill-chip:hover {
+    background: var(--ab-purple-soft);
+    border-color: #c9c1f7;
+    transform: translateY(-1px);
+}
+
+.about-page .about-skill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ab-purple);
+}
+
+/* ─── Project description card ─── */
+.about-page .about-project-desc {
+    font-size: 13px;
+    line-height: 1.75;
+    color: #484a62;
+    margin: 0;
+}
+
+.about-page .about-project-note {
+    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f1effe;
+    color: #6250e6;
+    border-radius: 8px;
+    padding: 7px 13px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 680px) {
+    .about-page .about-hero-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 24px 20px;
+        gap: 20px;
+    }
+
+    .about-page .about-intro {
+        max-width: 100%;
+    }
+
+    .about-page .about-profile-btns {
+        justify-content: center;
+    }
+
+    .about-page .about-section-card {
+        padding: 22px 18px;
+    }
+
+    .about-page .about-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-page .about-main {
+        padding: 20px 14px 40px;
+    }
+}
