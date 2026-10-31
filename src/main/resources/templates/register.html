@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Account | Haven Smart Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="auth-body">
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-brand">
+            <img class="logo" th:src="@{/images/logo.jpg}" alt="Haven Logo">
+            <div>
+                <strong>Haven</strong>
+                <small>SMART HOME</small>
+            </div>
+        </div>
+
+        <div class="auth-header">
+            <h2>Create account</h2>
+            <p class="muted">Set up your credentials to manage your connected home.</p>
+        </div>
+
+        <form th:action="@{/register}" th:object="${user}" method="post" class="auth-form" novalidate>
+            <!-- errorr -->
+            <div th:if="${#fields.hasGlobalErrors()}" class="alert error">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+            </div>
+
+            <label>
+                Username
+                <input type="text" th:field="*{username}" placeholder="Choose a username (min 3 chars)" required autofocus autocomplete="username">
+                <small class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+            </label>
+
+            <label>
+                Password
+                <input type="password" th:field="*{password}" placeholder="At least 6 characters" required autocomplete="new-password">
+                <small class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+            </label>
+
+            <label>
+                Confirm Password
+                <input type="password" th:field="*{confirmPassword}" placeholder="Repeat password" required autocomplete="new-password">
+                <small class="field-error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></small>
+            </label>
+
+            <button class="button button-primary auth-submit" type="submit">
+                Create Account <span>→</span>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Already have an account?
+            <a th:href="@{/login}">Sign in here</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

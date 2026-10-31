@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Devices | Haven</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand"><img class="logo" th:src="@{/images/logo.jpg}" alt="Haven Logo">
+                <div><strong>Haven</strong><small>SMART HOME</small></div>
+            </div>
+            <div class="nav-label">WORKSPACE</div><a class="nav-item" th:href="@{/}"> <span>Overview</span></a><a
+                class="nav-item active" th:href="@{/devices}"><span>Devices</span></a><a class="nav-item"
+                th:href="@{/rooms}"> <span>Rooms</span></a><a class="nav-item" th:href="@{/about}"><span>About</span></a>
+            <div class="sidebar-bottom">
+                <div class="profile-dot" sec:authentication="name"
+                    th:text="${#strings.substring(#authentication.name,0,1).toUpperCase()}">U</div>
+                <div style="flex: 1; min-width: 0;"><strong sec:authentication="name"
+                        style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">User</strong><small>Authenticated</small>
+                </div>
+                <form th:action="@{/logout}" method="post" class="logout-form"><button type="submit" class="logout-btn"
+                        title="Sign out">Log out</button></form>
+            </div>
+        </aside>
+        <main class="main">
+            <header class="topbar">
+                <div>
+
+                    <h1>Devices</h1>
+                </div><a class="button button-primary" href="#add-device">+ Add device</a>
+            </header>
+            <div th:if="${successMessage}" class="alert success" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="alert error" th:text="${errorMessage}"></div>
+            <section class="section-heading">
+                <div>
+                    <h2>Your devices</h2>
+                    
+                </div><span class="count-chip" th:text="${#lists.size(devices)} + ' devices'">0 devices</span>
+            </section>
+            <div class="table-card">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>DEVICE</th>
+                                <th>ROOM</th>
+                                <th>TYPE</th>
+                                <th>RATED POWER</th>
+                                <th>STATE</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${#lists.isEmpty(devices)}">
+                                <td colspan="6" class="empty-cell">No devices yet. Add your first device using the form
+                                    below.</td>
+                            </tr>
+                            <tr th:each="d : ${devices}">
+                                <td>
+                                    <div class="device-name"><span class="device-icon"
+                                            th:text="${d.deviceType.name() == 'LIGHT' ? '☼' : (d.deviceType.name() == 'THERMOSTAT' ? '♨' : (d.deviceType.name() == 'SENSOR' ? '◉' : '⏻'))}">☼</span>
+                                        <div><strong th:text="${d.name}">Ceiling light</strong><small
+                                                th:text="'Device #' + ${d.id}">Device #1</small></div>
+                                    </div>
+                                </td>
+                                <td th:text="${d.room.name}">Living room</td>
+                                <td><span class="type-chip" th:text="${d.deviceType}">LIGHT</span></td>
+                                <td
+                                    th:text="${d.ratedPowerW != null and d.ratedPowerW > 0 ? #numbers.formatDecimal(d.ratedPowerW,1,1) + ' W' : 'Unknown'}">
+                                    10 W</td>
+                                <td><span class="state-chip"
+                                        th:classappend="${d.actualState == 'ON'} ? ' state-on' : ' state-off'"
+                                        th:text="${d.actualState}">OFF</span></td>
+                                <td>
+                                    <div class="actions">
+                                        <form th:action="@{/devices/{id}/toggle(id=${d.id})}" method="post"><button
+                                                class="text-action" type="submit"
+                                                th:text="${d.actualState == 'ON' ? 'Turn off' : 'Turn on'}">Turn
+                                                on</button></form><a class="text-action"
+                                            th:href="@{/devices/{id}/edit(id=${d.id})}">Edit</a>
+                                        <form th:action="@{/devices/{id}/delete(id=${d.id})}" method="post"
+                                            th:attr="data-device-name=${d.name}"
+                                            onsubmit="return handleDeleteDevice(event, this);"><button
+                                                class="text-action danger-text" type="submit">🗑 Delete</button></form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <section id="add-device" class="form-panel">
+                <div class="panel-heading">
+                    <div>
+                
+                        <h2>Add a device</h2>
+                      
+                    </div><span class="form-step">01 / DEVICE</span>
+                </div>
+                <form th:action="@{/devices}" th:object="${device}" method="post" class="form-grid">
+                    <label>Device name<input type="text" th:field="*{name}" placeholder="e.g. Living room light"
+                            required maxlength="100"><small class="field-error" th:if="${#fields.hasErrors('name')}"
+                            th:errors="*{name}"></small></label>
+                    <label>Device type<select th:field="*{deviceType}" required>
+                            <option value="">Choose type</option>
+                            <option th:each="t : ${deviceTypes}" th:value="${t}" th:text="${t}"></option>
+                        </select><small class="field-error" th:if="${#fields.hasErrors('deviceType')}"
+                            th:errors="*{deviceType}"></small></label>
+                    <label>Room<select th:field="*{room.id}" required>
+                            <option value="">Choose room</option>
+                            <option th:each="r : ${rooms}" th:value="${r.id}" th:text="${r.name}"></option>
+                        </select><small class="field-error" th:if="${#fields.hasErrors('room')}"
+                            th:errors="*{room}"></small><small th:if="${#lists.isEmpty(rooms)}" class="hint">Create a
+                            room before adding a device.</small></label>
+                    <label>Rated power (W)<input type="number" th:field="*{ratedPowerW}" min="0.1" step="0.1"
+                            placeholder="e.g. 12 (optional)"><small class="field-error"
+                            th:if="${#fields.hasErrors('ratedPowerW')}" th:errors="*{ratedPowerW}"></small>
+                    </label>
+                    <label>Initial state<select th:field="*{requestedState}">
+                            <option value="OFF">OFF</option>
+                            <option value="ON">ON</option>
+                        </select></label>
+                    <label>Communication status<select th:field="*{communicationStatus}">
+                            <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"></option>
+                        </select></label>
+                    <div class="form-footer"><button
+                            class="button button-primary" type="submit">Save device <span>→</span></button></div>
+                </form>
+            </section>
+            <script>
+                function handleDeleteDevice(event, form) {
+                    const deviceName = form.getAttribute('data-device-name') || 'this device';
+                    if (!confirm('Are you sure you want to delete the device "' + deviceName + '"? Any related telemetry readings will also be safely removed.')) {
+                        event.preventDefault();
+                        return false;
+                    }
+                    const btn = form.querySelector('button[type="submit"]');
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.textContent = 'Deleting...';
+                    }
+                    return true;
+                }
+            </script>
+            
+        </main>
+    </div>
+</body>
+
+</html>
