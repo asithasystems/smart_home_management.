@@ -38,7 +38,9 @@ Project structure
 
 
 smart-home-management/
+
 pom.xml
+
 README.md
 src
 main/
