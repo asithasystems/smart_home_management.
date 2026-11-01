@@ -38,13 +38,10 @@ Project structure
 
 
 smart-home-management/
-├── pom.xml
-├── README.md
-├── docs/
-│   ├── erd.png
-│   └── screenshots/
-└── src/
-    ├── main/
+pom.xml
+README.md
+src
+main/
     │   ├── java/com/example/smarthome/
     │   │   ├── config/        (SecurityConfig)
     │   │   ├── controller/    (Auth, Home, Device, RoomSetup, PowerApi)
