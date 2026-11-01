@@ -39,26 +39,39 @@ Project structure
 
 smart-home-management/
 
-pom.xml
+├── pom.xml
 
-README.md
-src
-main/
+├── README.md
+
+└── src/
+
+    ├── main/
+    
     │   ├── java/com/example/smarthome/
+    
     │   │   ├── config/        (SecurityConfig)
+    
     │   │   ├── controller/    (Auth, Home, Device, RoomSetup, PowerApi)
+    
     │   │   ├── dto/
+    
     │   │   ├── entity/        (AppUser, Room, Device, TelemetryReading, enums)
+    
     │   │   ├── repository/
+    
     │   │   ├── service/
+    
     │   │   └── SmartHomeApplication.java
+    
     │   └── resources/
+    
     │       ├── application.properties
+    
     │       ├── static/        (css, images)
+    
     │       └── templates/     (login, register, index, rooms, devices, edit-device, about)
+    
     └── test/                  (3 test classes)
-
-
 
 
 
