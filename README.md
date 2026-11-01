@@ -94,9 +94,8 @@ The tables are created automatically the first time the application starts.
 
 2. Configure the database login.
 
-The application uses environment variables to read its settings: the default value for `DB_USER` is `root`, and the value of `DB_PASS` is required. For Windows PowerShell (for the current window):
+The application uses environment variables to read its settings: the default value for `DB_USER` is `root`, and the value of `DB_PASS` is required. For Windows PowerShell 
 
-powershell
 $env:DB_USER = "root"
 $env:DB_PASS = "YOUR_MYSQL_PASSWORD"
 
@@ -115,7 +114,7 @@ Next, go to http://localhost:8080 in a browser. Click on Create an account, regi
 
 4. Check the saved data
 
-sql
+
 USE smart_home_db;
 SELECT * FROM app_users;
 SELECT * FROM rooms;
@@ -123,8 +122,7 @@ SELECT * FROM devices;
 
 
 5. Run the tests
-
-bash
+   
 mvn test
 
 The tests use an in-memory H2 database, so they do not touch your MySQL data.
@@ -133,7 +131,7 @@ The tests use an in-memory H2 database, so they do not touch your MySQL data.
 Limitations and future work.
 
  The power readings are simulated from device ratings. No actual device is attached.
- Planned: real hardware (e.g. ESP32 via MQTT or HTTP), real readings in `telemetry_readings`, power history charts, admin and normal user roles.
+ Planned: real hardware (ESP32 via MQTT or HTTP), real readings in `telemetry_readings`, power history charts, admin and normal user roles.
 
 
 Author
